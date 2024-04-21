@@ -39,6 +39,7 @@ def newAccnt():
 def prevAccnt():
     checkName = input("Please enter your username: ")
     
+    ##Checks if account exists
     try:
         cursor.execute(accountFetch, (checkName,))
     except Exception as e:
@@ -59,6 +60,7 @@ def prevAccnt():
     print(pwd)
     checkPwd = input("Please enter your pwd: ")
     
+    ###checks if pwd is correct
     for i in range(3):
         if checkPwd != pwd:
             print(f'Incorrect password. You have used {i+1}/3 of your chances. \n')
@@ -73,16 +75,52 @@ def prevAccnt():
 
             if choice == "1":
                 deposit(userInfo)
-                pass
-                ###Making deposit function right now
+                break
+            if choice == "2":
+                withdraw(userInfo)
+                break
 
 ###Deposit function
+####################################################################################################
 
 def deposit(user):
     depositAmt = int(input("How much would you like to deposit? \n"))
     cursor.execute(f'UPDATE user_info2 SET balance = balance + {depositAmt} WHERE userName = "{user[0]}"')
     conn.commit()
-    print("Deposit sucess!")
+    print("Deposit success!\n")
+    print("\n Is there anything else we can help with today?")
+    print("\n1. Make deposit\n2. Make withdraw\n3. Exit\n")
+    nextChoice = input()
+    if nextChoice == "1":
+        deposit(user)
+    if nextChoice == "2":
+        withdraw(user)
+    if nextChoice == "3":
+        print("Thank you for using our bank, have a wonderful day!")
+        quit()
+
+###Withdraw function
+####################################################################################################
+
+def withdraw(user):
+    withdrawAmt = int(input("How much would you like to withdraw? \n"))
+    if user[2] < withdrawAmt:
+        print("Insufficient funds in your account, please try again")
+        withdraw(user)
+    else:
+        cursor.execute(f'UPDATE user_info2 SET balance = balance - {withdrawAmt} WHERE userName = "{user[0]}"')
+        conn.commit()
+    print("\n Is there anything else we can help with today?")
+    print("\n1. Make deposit\n2. Make withdraw\n3. Exit\n")
+    nextChoice = input()
+    if nextChoice == "1":
+        deposit(user)
+    if nextChoice == "2":
+        withdraw(user)
+    if nextChoice == "3":
+        print("Thank you for using our bank, have a wonderful day!")
+        quit()
+
 
     
 

@@ -26,6 +26,7 @@ def main():
 
 
 ###If need to make account, create username and password
+####################################################################################################
 def newAccnt():
     userName = input("Please provide a username: ")
     pwd = input("Please provide a password: ")
@@ -36,6 +37,7 @@ def newAccnt():
     main()
     
 ###If not need to make account used previous stored username and pwd
+####################################################################################################
 def prevAccnt():
     checkName = input("Please enter your username: ")
     
@@ -70,7 +72,8 @@ def prevAccnt():
             print("No password saved, please make an account")
         elif checkPwd == pwd:
             print("Correct password entered. \n")
-            print("How can we help you today?\n1. Make deposit\n2. Make withdraw\n")
+            ###choices
+            print("How can we help you today?\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n")
             choice = input()
 
             if choice == "1":
@@ -79,6 +82,17 @@ def prevAccnt():
             if choice == "2":
                 withdraw(userInfo)
                 break
+            if choice == "3":
+                changeName(userInfo)
+                break
+            if choice == "4":
+                changePwd(userInfo)
+            ### Will make change pwd function later
+            if choice == "5":
+                print("Thank you for using our bank, have a wonderful day!")
+                quit()
+
+
 
 ###Deposit function
 ####################################################################################################
@@ -89,13 +103,17 @@ def deposit(user):
     conn.commit()
     print("Deposit success!\n")
     print("\n Is there anything else we can help with today?")
-    print("\n1. Make deposit\n2. Make withdraw\n3. Exit\n")
+    print("\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n")
     nextChoice = input()
     if nextChoice == "1":
         deposit(user)
     if nextChoice == "2":
         withdraw(user)
     if nextChoice == "3":
+        changeName(user)
+    if nextChoice == "4":
+        changePwd(user)
+    if nextChoice == "5":
         print("Thank you for using our bank, have a wonderful day!")
         quit()
 
@@ -111,15 +129,117 @@ def withdraw(user):
         cursor.execute(f'UPDATE user_info2 SET balance = balance - {withdrawAmt} WHERE userName = "{user[0]}"')
         conn.commit()
     print("\n Is there anything else we can help with today?")
-    print("\n1. Make deposit\n2. Make withdraw\n3. Exit\n")
+    print("\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n")
     nextChoice = input()
     if nextChoice == "1":
         deposit(user)
     if nextChoice == "2":
         withdraw(user)
     if nextChoice == "3":
+        changeName(user)
+    if nextChoice == "4":
+        changePwd(user)
+    if nextChoice == "5":
         print("Thank you for using our bank, have a wonderful day!")
         quit()
+
+###change username function
+####################################################################################################
+
+def changeName(user):
+    nameChange = input("What would you like to change your username to? \n")
+    confirm = input(f'"{nameChange}" is what you entered, does this seem correct (y/n)? \n')
+
+    if confirm == "y":
+        print("Changing name...")
+        cursor.execute(f'UPDATE user_info2 SET userName = "{nameChange}" WHERE userName = "{user[0]}"')
+        conn.commit()
+        print("Name successfully changed! \n")
+
+        print("\n Is there anything else we can help with today?")
+        print("\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n")
+        nextChoice = input()
+        if nextChoice == "1":
+            deposit(user)
+        if nextChoice == "2":
+            withdraw(user)
+        if nextChoice == "3":
+            changeName(user)
+        if nextChoice == "4":
+            changePwd(user)
+        if nextChoice == "5":
+            print("Thank you for using our bank, have a wonderful day!")
+            quit()
+
+
+    if confirm == "n":
+        again = input("Would you like to try again (y/n)?")
+        if again == "y":
+            changeName(user)
+        if again == "n":
+            print("\n Is there anything else we can help with today?")
+            print("\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n")
+            nextChoice = input()
+            if nextChoice == "1":
+                deposit(user)
+            if nextChoice == "2":
+                withdraw(user)
+            if nextChoice == "3":
+                changeName(user)
+            if nextChoice == "4":
+                changePwd(user)
+            if nextChoice == "5":
+                print("Thank you for using our bank, have a wonderful day!")
+                quit()
+
+###Change password function
+####################################################################################################
+
+def changePwd(user):
+    pwdChange = input("What would you like to change your password to? \n")
+    confirm = input(f'"{pwdChange}" is what you entered, does this seem correct (y/n)? \n')
+
+    if confirm == "y":
+        print("Changing name...")
+        cursor.execute(f'UPDATE user_info2 SET pwd = "{pwdChange}" WHERE userName = "{user[0]}"')
+        conn.commit()
+        print("Password successfully changed! \n")
+
+        print("\n Is there anything else we can help with today?")
+        print("\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n")
+        nextChoice = input()
+        if nextChoice == "1":
+            deposit(user)
+        if nextChoice == "2":
+            withdraw(user)
+        if nextChoice == "3":
+            changeName(user)
+        if nextChoice == "4":
+            changePwd(user)
+        if nextChoice == "5":
+            print("Thank you for using our bank, have a wonderful day!")
+            quit()
+
+
+    if confirm == "n":
+        again = input("Would you like to try again (y/n)?")
+        if again == "y":
+            changePwd(user)
+        if again == "n":
+            print("\n Is there anything else we can help with today?")
+            print("\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n")
+            nextChoice = input()
+            if nextChoice == "1":
+                deposit(user)
+            if nextChoice == "2":
+                withdraw(user)
+            if nextChoice == "3":
+                changeName(user)
+            if nextChoice == "4":
+                changePwd(user)
+            if nextChoice == "5":
+                print("Thank you for using our bank, have a wonderful day!")
+                quit()    
 
 
     

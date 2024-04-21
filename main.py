@@ -2,8 +2,10 @@ import mysql.connector
 conn = mysql.connector.connect(host= '127.0.0.1', user = 'root', passwd="WaffleMan@978", port=3306, database = "bank_data")
 cursor = conn.cursor()
 
-add_data = "INSERT INTO user_info (userName, pwd) VALUES(%s, %s)"
-accountFetch = "SELECT * FROM user_info WHERE userName = %s"
+add_data = "INSERT INTO user_info2 (userName, pwd, balance) VALUES(%s, %s, %s)"
+accountFetch = "SELECT * FROM user_info2 WHERE userName = %s"
+deposit = "UPDATE user_info2 SET balance = balance + %s WHERE userName = %s"
+cursor.execute("UPDATE user_info2 SET balance = balance + 100 WHERE userName = 'testUser'")
 ##conn.close()
 
 ###################################################################################
@@ -27,9 +29,11 @@ def main():
 def newAccnt():
     userName = input("Please provide a username: ")
     pwd = input("Please provide a password: ")
-    storeInfo = (userName, pwd)
+    balance = input("Please provide a starting balance: ")
+    storeInfo = (userName, pwd, balance)
     cursor.execute(add_data, storeInfo)
     conn.commit()
+    main()
     
 ###If not need to make account used previous stored username and pwd
 def prevAccnt():
@@ -69,10 +73,17 @@ def prevAccnt():
 
             if choice == "1":
                 deposit(userInfo)
+                pass
                 ###Making deposit function right now
+
+###Deposit function
 
 def deposit(user):
     depositAmt = int(input("How much would you like to deposit? \n"))
+    cursor.execute(f'UPDATE user_info2 SET balance = balance + {depositAmt} WHERE userName = "{user[0]}"')
+    conn.commit()
+    print("Deposit sucess!")
+
     
 
 

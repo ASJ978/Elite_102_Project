@@ -91,6 +91,8 @@ def prevAccnt():
             if choice == "5":
                 print("Thank you for using our bank, have a wonderful day!")
                 quit()
+            if choice == "7":
+                checkBal(userInfo)
     print("Maximum attempts reached, please try again.")
     main()
 
@@ -104,7 +106,10 @@ def deposit(user):
     depositAmt = int(input("How much would you like to deposit? \n"))
     cursor.execute(f'UPDATE user_info2 SET balance = balance + {depositAmt} WHERE userName = "{user[0]}"')
     conn.commit()
-    print("Deposit success!\n")
+    print('Deposit success!')
+    cursor.execute(f"SELECT balance FROM user_info2 WHERE userName = '{user[0]}'")
+    queryData = cursor.fetchone()
+    print(f'Current balance: ${queryData[0]}')
     choice(user)
 
 ###Withdraw function
@@ -119,7 +124,11 @@ def withdraw(user):
     else:
         cursor.execute(f'UPDATE user_info2 SET balance = balance - {withdrawAmt} WHERE userName = "{user[0]}"')
         conn.commit()
-        print("Withdraw success!")
+        print('Withdraw success!\n')
+        cursor.execute(f"SELECT balance FROM user_info2 WHERE userName = '{user[0]}'")
+        queryData = cursor.fetchone()
+        print(f'Current balance: ${queryData[0]}')
+        
     choice(user)
     
 ###change username function
@@ -173,7 +182,7 @@ def changePwd(user):
 
 def choice(user):
     print("\n Is there anything else we can help with today?")
-    print("\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n")
+    print("\n1. Make deposit\n2. Make withdraw\n3. Change Username \n4. Change Password\n5. Exit\n6. Back\n7. View balance\n")
     nextChoice = input()
     if nextChoice == "1":
         deposit(user)
@@ -186,6 +195,17 @@ def choice(user):
     if nextChoice == "5":
         print("Thank you for using our bank, have a wonderful day!")
         quit()    
+    if nextChoice == "6":
+        main()
+    if nextChoice == "7":
+        checkBal(user)
+
+
+def checkBal(user):
+    cursor.execute(f"SELECT balance FROM user_info2 WHERE userName = '{user[0]}'")
+    queryData = cursor.fetchone()
+    print(f'Current Balance: ${queryData[0]}')
+    choice(user)
 
 
 

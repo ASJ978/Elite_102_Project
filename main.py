@@ -88,10 +88,11 @@ def prevAccnt():
                 break
             if choice == "4":
                 changePwd(userInfo)
-            ### Will make change pwd function later
             if choice == "5":
                 print("Thank you for using our bank, have a wonderful day!")
                 quit()
+    print("Maximum attempts reached, please try again.")
+    main()
 
 
 
